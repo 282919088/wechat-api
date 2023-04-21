@@ -35,7 +35,7 @@ wechat-api 是微信个人号的Java版本API，让个人号具备更多能力�
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>wechat-api</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.7-SNAPSHOT</version>
 </dependency>
 ```
 私服仓库
