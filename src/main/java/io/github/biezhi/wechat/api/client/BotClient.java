@@ -93,25 +93,11 @@ public class BotClient {
 
     public <T extends ApiRequest, R extends ApiResponse> R send(final ApiRequest<T, R> request) {
         try {
-            HttpGet httpGet = new HttpGet(request.getUrl());
-            httpGet.setHeader("User-Agent", Config.USER_AGENT);
-            httpGet.setHeader("client-version", Config.UOS_PATCH_CLIENT_VERSION);
-            httpGet.setHeader("extspam", Config.UOS_PATCH_EXTSPAM);
-            httpGet.setHeader("referer", Config.REFERER);
-            httpGet.setHeader("contentType", "application/x-www-form-urlencoded");
-            httpGet.setConfig(RequestConfig.custom().setRedirectsEnabled(false).build()); // 禁止重定向
-            CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(new BasicCookieStore()).build();
-            CloseableHttpResponse response1 = httpClient.execute(httpGet);
-            HttpEntity entity = response1.getEntity();
-            String result1 = EntityUtils.toString(entity, Consts.UTF_8);
-            log.info(result1);
-
-
             OkHttpClient client = getOkHttpClient(request);
-            request.header("User-Agent", Config.USER_AGENT);
-            request.header("client-version", Config.UOS_PATCH_CLIENT_VERSION);
-            request.header("extspam", Config.UOS_PATCH_EXTSPAM);
-            request.header("referer", Config.REFERER);
+            request.header("User-Agent", Constant.USER_AGENT);
+            request.header("client-version", Constant.UOS_PATCH_CLIENT_VERSION);
+            request.header("extspam", Constant.UOS_PATCH_EXTSPAM);
+            request.header("referer", Constant.REFERER);
             Request      okHttpRequest = createRequest(request);
             Response     response      = client.newCall(okHttpRequest).execute();
             String       body          = response.body().string();

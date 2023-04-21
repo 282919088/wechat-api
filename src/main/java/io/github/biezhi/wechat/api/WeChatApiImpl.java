@@ -179,7 +179,11 @@ public class WeChatApiImpl implements WeChatApi {
         log.info("获取二维码UUID");
         // 登录
         ApiResponse response = this.client.send(new StringRequest("https://login.weixin.qq.com/jslogin")
-                .add("appid", "wx782c26e4c19acffb").add("fun", "new"));
+                .add(UUIDPara.APP_ID.key(), UUIDPara.APP_ID.value())
+                .add(UUIDPara.FUN.key(), UUIDPara.FUN.value())
+                .add(UUIDPara.LANG.key(), UUIDPara.LANG.value())
+                .add(UUIDPara.REDIRECT_URL.key(), UUIDPara.REDIRECT_URL.value())
+                .add(UUIDPara._.key(), UUIDPara._.value()));
 
         Matcher matcher = UUID_PATTERN.matcher(response.getRawBody());
         if (matcher.find() && StateCode.SUCCESS.equals(matcher.group(1))) {
@@ -250,12 +254,10 @@ public class WeChatApiImpl implements WeChatApi {
     private boolean processLoginSession(String loginContent) {
         LoginSession loginSession = bot.session();
         Matcher      matcher      = PROCESS_LOGIN_PATTERN.matcher(loginContent);
-        String originalUrl = "";
         if (matcher.find()) {
-            originalUrl = matcher.group(1);
+            loginSession.setUrl(matcher.group(1));
         }
-        loginSession.setUrl(originalUrl);
-        ApiResponse response = this.client.send(new StringRequest(originalUrl).noRedirect());
+        ApiResponse response = this.client.send(new StringRequest(loginSession.getUrl()).noRedirect());
         loginSession.setUrl(loginSession.getUrl().substring(0, loginSession.getUrl().lastIndexOf("/")));
 
         String body = response.getRawBody();
@@ -361,7 +363,7 @@ public class WeChatApiImpl implements WeChatApi {
     }
 
     /**
-     * 开启一个县城接收监听
+     * 开启一个线程接收监听
      */
     private void startRevive() {
         bot.setRunning(true);
@@ -417,9 +419,11 @@ public class WeChatApiImpl implements WeChatApi {
      */
     @Override
     public WebSyncResponse webSync() {
-        String url = String.format("%s/webwxsync?sid=%s&sKey=%s&passTicket=%s",
-                bot.session().getUrl(), bot.session().getWxSid(),
-                bot.session().getSKey(), bot.session().getPassTicket());
+        String url = String.format("%s/webwxsync?sid=%s&skey=%s&pass_ticket=%s",
+                bot.session().getUrl(),
+                bot.session().getWxSid(),
+                bot.session().getSKey(),
+                bot.session().getPassTicket());
 
         JsonResponse response = this.client.send(new JsonRequest(url).post().jsonBody()
                 .add("BaseRequest", bot.session().getBaseRequest())
