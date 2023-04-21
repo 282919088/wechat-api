@@ -466,6 +466,8 @@ public class WeChatApiImpl implements WeChatApi {
     @Override
     public void loadContact(int seq) {
         log.info("开始获取联系人信息");
+        this.memberCount = 0;
+        accountMap.clear();
         while (true) {
             String url = String.format("%s/webwxgetcontact?r=%s&seq=%s&skey=%s",
                     bot.session().getUrl(), System.currentTimeMillis(),
@@ -480,7 +482,7 @@ public class WeChatApiImpl implements WeChatApi {
             List<Account> memberList = WeChatUtils.fromJson(WeChatUtils.toJson(jsonObject.getAsJsonArray("MemberList")), new TypeToken<List<Account>>() {});
 
             for (Account account : memberList) {
-                if (null == account.getUserName()) {
+                if (StringUtils.isNotEmpty(account.getUserName())) {
                     accountMap.put(account.getUserName(), account);
                 }
             }
