@@ -849,6 +849,7 @@ public class WeChatApiImpl implements WeChatApi {
                 return weChatMessageBuilder.videoPath(videoPath).build();
             // 动画表情
             case EMOTICONS:
+                //TODO 存在问题
                 String imgUrl = this.searchContent("cdnurl", content);
                 return weChatMessageBuilder.imagePath(imgUrl).build();
             // 分享
@@ -982,13 +983,13 @@ public class WeChatApiImpl implements WeChatApi {
         long   size      = file.length();
         String mimeType  = WeChatUtils.getMimeType(filePath);
         String mediatype = "doc";
-        if (mediatype.contains("image")) {
+        if (mimeType.contains("image")) {
             mediatype = "pic";
         }
-        if (mediatype.contains("audio")) {
+        if (mimeType.contains("audio")) {
             mediatype = "audio";
         }
-        if (mediatype.contains("video")) {
+        if (mimeType.contains("video")) {
             mediatype = "video";
         }
         String url     = String.format("%s/webwxuploadmedia?f=json", bot.session().getFileUrl());

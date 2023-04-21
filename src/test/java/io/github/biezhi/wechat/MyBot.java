@@ -21,6 +21,10 @@ public class MyBot extends WeChatBot {
         super(config);
     }
 
+    public static void main(String[] args) {
+        new MyBot(Config.me().autoLogin(true).showTerminal(true)).start();
+    }
+
     /**
      * 绑定群聊信息
      *
@@ -37,12 +41,39 @@ public class MyBot extends WeChatBot {
      *
      * @param message
      */
-    @Bind(msgType = {MsgType.TEXT, MsgType.VIDEO, MsgType.IMAGE, MsgType.EMOTICONS}, accountType = AccountType.TYPE_FRIEND)
+    @Bind(msgType = {MsgType.TEXT}, accountType = AccountType.TYPE_FRIEND)
     public void friendMessage(WeChatMessage message) {
-        if (StringUtils.isNotEmpty(message.getName())) {
-            log.info("接收到好友 [{}] 的消息: {}", message.getName(), message.getText());
+        log.info("TEXT:接收到好友 [{}] 的消息: {}", message.getName(), message.getText());
+        if (StringUtils.isNotEmpty(message.getName()) && message.getText().lastIndexOf("ai") == 0) {
             this.api().sendText(message.getFromUserName(), "自动回复: " + message.getText());
-//            this.api().sendFile("战斗型美少女", "/Users/biezhi/Desktop/Hot_Spots_blade2.0.4_alpha1.html");
+        }
+    }
+
+    /**
+     * 绑定私聊消息
+     *
+     * @param message
+     */
+    @Bind(msgType = {MsgType.IMAGE}, accountType = AccountType.TYPE_FRIEND)
+    public void friendMessageImage(WeChatMessage message) {
+        log.info("IMAGE：接收到好友 [{}] 的消息: {}", message.getName(), message.getText());
+        if (StringUtils.isNotEmpty(message.getName())) {
+            this.api().sendImg(message.getFromUserName(), message.getImagePath());
+        }
+    }
+
+
+
+    /**
+     * 绑定私聊消息
+     *
+     * @param message
+     */
+    @Bind(msgType = {MsgType.EMOTICONS}, accountType = AccountType.TYPE_FRIEND)
+    public void friendMessageEmoticons(WeChatMessage message) {
+        log.info("EMOTICONS:接收到好友 [{}] 的消息: {}", message.getName(), message.getText());
+        if (StringUtils.isNotEmpty(message.getName())) {
+            this.api().sendText(message.getFromUserName(), message.getText());
         }
     }
 
@@ -57,10 +88,6 @@ public class MyBot extends WeChatBot {
         if (message.getText().contains("java")) {
             this.api().verify(message.getRaw().getRecommend());
         }
-    }
-
-    public static void main(String[] args) {
-        new MyBot(Config.me().autoLogin(true).showTerminal(true)).start();
     }
 
 }

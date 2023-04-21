@@ -22,6 +22,7 @@ public class DownLoad {
     public DownLoad(ApiURL apiURL, String... params) {
         this.apiURL = apiURL;
         this.params = params;
+        this.suffix = apiURL.getSuffix();
     }
 
     public DownLoad msgId(String msgId) {
