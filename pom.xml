@@ -6,7 +6,7 @@
 
     <groupId>io.github.biezhi</groupId>
     <artifactId>wechat-api</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <name>wechat-api</name>
 
     <url>https://github.com/biezhi/wechat-api</url>
@@ -240,4 +240,16 @@
         </profile>
     </profiles>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-mliu</id>
+            <name>Snapshot</name>
+            <url>https://nexus.javasvn.com/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-mliu</id>
+            <name>Releases</name>
+            <url>https://nexus.javasvn.com/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

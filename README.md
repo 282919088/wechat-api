@@ -1,5 +1,7 @@
 # wechat-api
 
+修复微信登录功能 2023/04/21
+
 wechat-api 是微信个人号的Java版本API，让个人号具备更多能力，提供方便的接口调用。
 
 [在线文档](https://biezhi.github.io/wechat-api/)
@@ -33,8 +35,18 @@ wechat-api 是微信个人号的Java版本API，让个人号具备更多能力�
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>wechat-api</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
+```
+私服仓库
+```xml
+    <repositories>
+        <repository>
+            <id>nexus-mliu</id>
+            <name>lium maven</name>
+            <url>https://nexus.javasvn.com/content/groups/public/</url>
+        </repository>
+    </repositories>
 ```
 
 构建自己的小机器人
